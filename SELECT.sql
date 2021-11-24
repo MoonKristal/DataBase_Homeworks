@@ -29,7 +29,7 @@ SELECT EMP_ID, EMP_NAME, PHONE, EMAIL
 FROM EMPLOYEE
 WHERE PHONE LIKE '___9%';
 
--- 2. 전화번호 처음 3글자가 010이 아닌 사원들의 이름, 전화번호 조회
+-- 전화번호 처음 3글자가 010이 아닌 사원들의 이름, 전화번호 조회
 SELECT EMP_NAME, PHONE
 FROM EMPLOYEE
 WHERE NOT PHONE LIKE '010%';
@@ -45,7 +45,7 @@ FROM EMPLOYEE
 --WHERE DEPT_CODE = 'D6' OR DEPT_CODE = 'D8' OR DEPT_CODE = 'D5';
 WHERE DEPT_CODE IN('D6', 'D8', 'D5');
 
--- 2번 문제. 직급이 'J7'이거나 'J2'이면서 급여를 200만원 이상 받는 직원의 
+-- 직급이 'J7'이거나 'J2'이면서 급여를 200만원 이상 받는 직원의 
 -- 사번, 사원명, 직급코드, 급여, 연봉 조회하기
 SELECT EMP_NO, EMP_NAME, JOB_CODE, SALARY, SALARY*12
 FROM EMPLOYEE
