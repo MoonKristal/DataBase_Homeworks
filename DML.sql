@@ -1,0 +1,74 @@
+
+-- 1번 문제. 
+--부서 별 GROUP BY
+--급여 합계가 SUM(SALAY)
+--전체 급여 총 합의 SUM(SALARY
+--20%보다 많은 (  * 0.2)
+--부서의 부서 명, 부서 별 급여 합계 조회 DEPT_TITLE, SUM(SALARY)
+
+SELECT DEPT_TITLE, SUM(SALARY)
+FROM EMPLOYEE
+JOIN DEPARTMENT ON (DEPT_CODE = DEPT_ID)
+GROUP BY DEPT_TITLE
+HAVING SUM(SALARY) > (SELECT SUM(SALARY) * 0.2 FROM EMPLOYEE);
+
+SELECT DEPT_TITLE, 연봉
+FROM(SELECT DEPT_TITLE, SUM(SALARY) "연봉"
+    FROM EMPLOYEE
+        JOIN DEPARTMENT ON (DEPT_CODE = DEPT_ID)
+        GROUP BY DEPT_TITLE)
+WHERE 연봉 > (SELECT SUM(SALARY) * 0.2
+            FROM EMPLOYEE);
+    
+
+--                                     EMP_ID, EMP_NAME, DEPT_TITLE, JOB_NAME, HIRE_DATE, RANK() OVER(보너스포함연봉) 순위
+-- 2번 문제. 보너스 포함한 연봉이 높은 5명의 사번, 이름, 부서 명, 직급, 입사일, 순위 조회
+-- EMPLOYEE, DEPARTMENT, JOB
+--
+--
+--WHERE 순위 <= 5;
+-- RANK() OVER(SALARY + SALARY * NVL(BONUS, 0)) * 12
+
+SELECT ROWNUM, EMP_ID, DEPT_TITLE, JOB_NAME, HIRE_DATE, 순위
+FROM(SELECT EMP_ID, DEPT_TITLE, JOB_NAME, HIRE_DATE,
+    RANK() OVER(ORDER BY (SALARY + SALARY * NVL(BONUS, 0)) * 12 DESC) 순위
+    FROM EMPLOYEE E
+    JOIN DEPARTMENT D ON (E.DEPT_CODE = D.DEPT_ID)
+    JOIN JOB J ON (E.JOB_CODE = J.JOB_CODE)
+    )
+WHERE 순위 <= 5;
+
+-- 3번문제. 보너스가 없고 직급 코드가 J4이거나 J7인 사원의 이름, 직급, 급여 조회
+
+SELECT EMP_NAME, JOB_NAME, SALARY
+FROM EMPLOYEE
+JOIN JOB USING(JOB_CODE)
+WHERE (BONUS IS NULL) AND (JOB_CODE IN ('J4', 'J7'));
+--WHERE NVL(BONUS, 0) = 0; 도 가능
+
+
+-- 4번문제. 계열정보를 저장할 카테고리 테이블을 만들기
+--테이블 이름
+--TB_CATEGORY
+--컬럼
+--NAME, VARCHAR2(10)
+--USE_YN, CHAR(1), 기본값 Y가 들어가도록
+
+CREATE TABLE TB_CATEGORY(
+    NAME VARCHAR2(10), 
+    USE_YN CHAR(1) DEFAULT 'Y'
+    
+);
+
+
+-- 5번 문제. 과목 구분을 저장할 테이블 만들기
+--테이블 이름
+--TB_CLASS_TYPE
+--컬럼
+--NO, VARCHAR2(5), PRIMARY KEY
+--NAME, VARCHAR2(10)
+--
+CREATE TABLE TB_CLASS_TYPE(
+    NO VARCHAR2(5) PRIMARY KEY,
+    NAME VARCHAR2(20)
+);
