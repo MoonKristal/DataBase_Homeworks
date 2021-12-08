@@ -112,8 +112,7 @@ SELECT EMP_ID, EMP_NAME, TRUNC/*/ROUND*/(SALARY/25/9,-1) 시급
 FROM EMPLOYEE
 ORDER BY SALARY DESC;
 
--- SALARY / 25 / 9
-
+-- 문제 8)
 -- 부서별 급여 합이 가장 큰 부서 하나만을 조회 부서코드, 부서명, 급여합 조회
 SELECT DEPT_CODE, SUM(SALARY)
 FROM EMPLOYEE 
